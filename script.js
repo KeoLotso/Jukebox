@@ -21,7 +21,6 @@ const selectedSection = document.getElementById("selected-jukebox-section");
 selectedSection.classList.remove("hidden");
 
 const nameEl = document.getElementById("selected-jukebox-name");
-nameEl.textContent = jukebox.displayName || jukebox.name;
 
 let tokenBtn = document.getElementById("copy-jukebox-token-btn");
 if (!tokenBtn) {
@@ -33,7 +32,11 @@ if (!tokenBtn) {
 }
 
 tokenBtn.onclick = async () => {
-  const token = btoa(jukebox.id);
+  if (!selectedJukebox) {
+    showToast("No jukebox selected", "error");
+    return;
+  }
+  const token = btoa(selectedJukebox.id);
   try {
     await navigator.clipboard.writeText(token);
     showToast("JukeboxToken copied!", "success");
@@ -43,13 +46,10 @@ tokenBtn.onclick = async () => {
 };
 
 
-let selectedJukebox = null;
-
 async function selectJukebox(jukebox) {
   selectedJukebox = jukebox;
   document.getElementById("selected-jukebox-section").classList.remove("hidden");
   document.getElementById("selected-jukebox-name").textContent = jukebox.displayName || jukebox.name;
-  await loadFiles(jukebox.id);
 }
 
 document.getElementById("upload-btn").addEventListener("click", async () => {
