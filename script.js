@@ -2,6 +2,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const SUPABASE_URL = "https://apqeitnavsjwqrpruuqq.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwcWVpdG5hdnNqd3FycHJ1dXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxMDUzMzYsImV4cCI6MjA1OTY4MTMzNn0.G14iwTdC2qpCsRTw3-JcKTowx4yRWJPpObGGWIr65lQ";
+const redirectTo = 'https://keolotso.github.io/Jukebox/auth-redirect.html';
 
 const STORAGE_BUCKET_NAME = 'jukebox';
 
@@ -72,6 +73,9 @@ signupBtn.addEventListener('click', async () => {
   const { data, error } = await supabase.auth.signUp({
     email: emailInput.value,
     password: passwordInput.value,
+    options: {
+      emailRedirectTo: redirectTo
+    }
   });
 
   if (error) return showToast(error.message, 'error');
