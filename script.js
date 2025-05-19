@@ -21,8 +21,12 @@ const selectedSection = document.getElementById("selected-jukebox-section");
 selectedSection.classList.remove("hidden");
 
 const nameEl = document.getElementById("selected-jukebox-name");
-nameEl.textContent = jukebox.displayName || jukebox.name;
 
+// Define selectedJukebox globally
+let selectedJukebox = null;
+
+// Initialize jukebox name text to empty or placeholder (no jukebox selected yet)
+nameEl.textContent = "";
 
 let tokenBtn = document.getElementById("copy-jukebox-token-btn");
 if (!tokenBtn) {
@@ -47,7 +51,6 @@ tokenBtn.onclick = async () => {
   }
 };
 
-
 async function selectJukebox(jukebox) {
   selectedJukebox = jukebox;
   const nameEl = document.getElementById("selected-jukebox-name");
@@ -55,7 +58,6 @@ async function selectJukebox(jukebox) {
   document.getElementById("selected-jukebox-section").classList.remove("hidden");
   await loadFiles(jukebox.id);
 }
-
 
 document.getElementById("upload-btn").addEventListener("click", async () => {
   const files = document.getElementById("file-upload").files;
@@ -246,6 +248,7 @@ supabase.auth.getSession().then(({ data: { session } }) => {
     loadUser();
   }
 });
+
 async function loadFiles(jukeboxId) {
   const { data: files, error } = await supabase.storage
     .from(STORAGE_BUCKET_NAME)
@@ -278,6 +281,7 @@ async function loadFiles(jukeboxId) {
     list.appendChild(li);
   });
 }
+
 window.deleteFile = async function(jukeboxId, fileName) {
   const filePath = `${jukeboxId}/${fileName}`;
   console.log("Attempting to delete:", filePath);
