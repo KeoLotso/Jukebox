@@ -2,32 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Authenticating...</title>
+  <title>Redirecting...</title>
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const SUPABASE_URL = 'https://apqeitnavsjwqrpruuqq.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwcWVpdG5hdnNqd3FycHJ1dXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxMDUzMzYsImV4cCI6MjA1OTY4MTMzNn0.G14iwTdC2qpCsRTw3-JcKTowx4yRWJPpObGGWIr65lQ';
+    const supabase = createClient(
+      'https://apqeitnavsjwqrpruuqq.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwcWVpdG5hdnNqd3FycHJ1dXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxMDUzMzYsImV4cCI6MjA1OTY4MTMzNn0.G14iwTdC2qpCsRTw3-JcKTowx4yRWJPpObGGWIr65lQ'
+    );
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const fragment = window.location.hash.substring(1); // remove "#"
+    const params = new URLSearchParams(fragment);
 
-    async function handleRedirect() {
-      const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true });
-      
-      if (error) {
-        document.body.innerHTML = `<p>Error during sign in: ${error.message}</p>`;
-        return;
-      }
+    const access_token = params.get('access_token');
+    const refresh_token = params.get('refresh_token');
 
-      if (data.session) {
-        window.location.href = 'https://keolotso.github.io/Jukebox/';
-      }
+    if (access_token && refresh_token) {
+      await supabase.auth.setSession({ access_token, refresh_token });
     }
 
-    handleRedirect();
+    // Redirect to your main app
+    window.location.href = 'https://keolotso.github.io/Jukebox/';
   </script>
 </head>
 <body>
-  <p>Authenticating... Please wait.</p>
+  <p>Redirecting, please wait...</p>
 </body>
 </html>
