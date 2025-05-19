@@ -17,6 +17,32 @@ const authSection = document.getElementById('auth-section');
 const userSection = document.getElementById('user-section');
 const userEmailSpan = document.getElementById('user-email');
 
+const selectedSection = document.getElementById("selected-jukebox-section");
+selectedSection.classList.remove("hidden");
+
+const nameEl = document.getElementById("selected-jukebox-name");
+nameEl.textContent = jukebox.displayName || jukebox.name;
+
+let tokenBtn = document.getElementById("copy-jukebox-token-btn");
+if (!tokenBtn) {
+  tokenBtn = document.createElement("button");
+  tokenBtn.id = "copy-jukebox-token-btn";
+  tokenBtn.textContent = "Copy JukeBoxToken";
+  tokenBtn.className = "btn-outline";
+  nameEl.insertAdjacentElement("afterend", tokenBtn);
+}
+
+tokenBtn.onclick = async () => {
+  const token = btoa(jukebox.id);
+  try {
+    await navigator.clipboard.writeText(token);
+    showToast("JukeboxToken copied!", "success");
+  } catch (err) {
+    showToast("Failed to copy token", "error");
+  }
+};
+
+
 let selectedJukebox = null;
 
 async function selectJukebox(jukebox) {
