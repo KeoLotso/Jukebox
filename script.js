@@ -21,6 +21,8 @@ const selectedSection = document.getElementById("selected-jukebox-section");
 selectedSection.classList.remove("hidden");
 
 const nameEl = document.getElementById("selected-jukebox-name");
+nameEl.textContent = jukebox.displayName || jukebox.name;
+
 
 let tokenBtn = document.getElementById("copy-jukebox-token-btn");
 if (!tokenBtn) {
@@ -48,9 +50,12 @@ tokenBtn.onclick = async () => {
 
 async function selectJukebox(jukebox) {
   selectedJukebox = jukebox;
+  const nameEl = document.getElementById("selected-jukebox-name");
+  nameEl.textContent = jukebox.displayName || jukebox.name;
   document.getElementById("selected-jukebox-section").classList.remove("hidden");
-  document.getElementById("selected-jukebox-name").textContent = jukebox.displayName || jukebox.name;
+  await loadFiles(jukebox.id);
 }
+
 
 document.getElementById("upload-btn").addEventListener("click", async () => {
   const files = document.getElementById("file-upload").files;
