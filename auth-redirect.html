@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Authenticating...</title>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL = 'https://apqeitnavsjwqrpruuqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwcWVpdG5hdnNqd3FycHJ1dXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxMDUzMzYsImV4cCI6MjA1OTY4MTMzNn0.G14iwTdC2qpCsRTw3-JcKTowx4yRWJPpObGGWIr65lQ';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function handleRedirect() {
+      const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true });
+      
+      if (error) {
+        document.body.innerHTML = `<p>Error during sign in: ${error.message}</p>`;
+        return;
+      }
+
+      if (data.session) {
+        window.location.href = 'https://keolotso.github.io/Jukebox/';
+      }
+    }
+
+    handleRedirect();
+  </script>
+</head>
+<body>
+  <p>Authenticating... Please wait.</p>
+</body>
+</html>
