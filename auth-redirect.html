@@ -11,7 +11,7 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwcWVpdG5hdnNqd3FycHJ1dXFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQxMDUzMzYsImV4cCI6MjA1OTY4MTMzNn0.G14iwTdC2qpCsRTw3-JcKTowx4yRWJPpObGGWIr65lQ'
     );
 
-    const fragment = window.location.hash.substring(1); // remove "#"
+    const fragment = window.location.hash.substring(1);
     const params = new URLSearchParams(fragment);
 
     const access_token = params.get('access_token');
@@ -21,7 +21,6 @@
       await supabase.auth.setSession({ access_token, refresh_token });
     }
 
-    // Redirect to your main app
     window.location.href = 'https://keolotso.github.io/Jukebox/';
   </script>
 </head>
